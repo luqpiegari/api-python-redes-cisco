@@ -1,12 +1,14 @@
-import json
+from getpass import getpass
+import os
 import requests
 api_url = "http://localhost:58000/api/v1/host"
 
-headers={"X-Auth-Token": "NC-144-d131174a867340c3a5a8-nbi"}
+headers = {"X-Auth-Token": os.getenv("PT_NC_TICKET") or getpass("Ticket del controlador: ")}
 
-resp = requests.get(api_url, headers=headers, verify=False)
+resp = requests.get(api_url, headers=headers)
 
 print("Request status: ", resp.status_code)
+resp.raise_for_status()
 
 response_json = resp.json()
 print (response_json)
@@ -15,4 +17,4 @@ print()
 hosts = response_json["response"]
 
 for host in hosts:
-    print(host["hostName"], "\t", host["hostIp"], "\t", host["hostMac"], "\t", host["connectedInterfaceName"])
+    print(host.get("hostName", "-"), "\t", host.get("hostIp", "-"), "\t", host.get("hostMac", "-"), "\t", host.get("connectedInterfaceName", "-"))

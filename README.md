@@ -41,5 +41,14 @@ Simplemente escribimos en la línea de comandos: **deactivate**
 
 ## Antes de ejecutar los scripts
 
-- **Credenciales del controlador:** los scripts usan el usuario `cisco` y la clave `cisco123!`. Si en tu Network Controller creaste otro usuario, cambialos en `01_get-ticket.py` y en `04_tabulate.py`.
-- **Ticket (X-Auth-Token):** `02_get-network-device.py` y `03_get-host.py` traen escrito un ticket de ejemplo que **no va a funcionar** en tu Packet Tracer, porque el controlador genera uno nuevo en cada sesión y vence. Ejecutá primero `01_get-ticket.py`, copiá el ticket que muestra y reemplazalo en el header `X-Auth-Token` de esos dos scripts. `04_tabulate.py` no necesita este paso: pide el ticket solo.
+Habilitá el acceso externo del controlador en Packet Tracer y dejá el puerto `58000`. Ejecutá los scripts desde la raíz del repositorio.
+
+| Script | Función |
+| --- | --- |
+| `python src/01_get-ticket.py` | Pide el usuario y la contraseña y obtiene un ticket temporal. |
+| `python src/02_get-network-device.py` | Pide el ticket y consulta los equipos de red, incluido el ISP descubierto sin credenciales. |
+| `python src/03_get-host.py` | Pide el ticket y consulta los hosts y sus interfaces. |
+| `python src/04_tabulate.py` | Obtiene su propio ticket y muestra ambos inventarios como tablas. |
+| `python src/inventario_csv.py USUARIO --salida inventario.csv` | Obtiene su propio ticket y exporta equipos y hosts a un CSV nuevo. |
+
+Los scripts de la cátedra también admiten las variables locales `PT_NC_USER`, `PT_NC_PASSWORD` y `PT_NC_TICKET`, según el script. El ticket vence y permite acceder a la API mientras está vigente. Conservá los tickets y contraseñas fuera del repositorio público.
